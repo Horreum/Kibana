@@ -1,0 +1,40 @@
+{
+    "name": "Synthetics internal TLS rule",
+    "tags": [
+        "SYNTHETICS_DEFAULT_ALERT"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "recovered",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "TLS alert for monitor \"{{context.monitorName}}\" has recovered - Elastic Synthetics\n\nDetails:\n\n- Summary: {{context.summary}}\n- New status : {{context.newStatus}}\n- Previous status: {{context.previousStatus}}\n- Monitor: {{context.monitorName}}  \n- URL: {{{context.monitorUrl}}}  \n- Monitor type: {{context.monitorType}}  \n- From: {{context.locationNames}}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "70a3ed39-c5ac-4cac-8b10-9f1ed6ec312d"
+        },
+        {
+            "group": "xpack.synthetics.alerts.actionGroups.tls",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "TLS certificate {{context.commonName}} {{context.status}} - Elastic Synthetics\n\nDetails:\n\n- Summary: {{context.summary}}\n- Common name: {{context.commonName}}\n- Issuer: {{context.issuer}}\n- Monitor: {{context.monitorName}}  \n- Monitor URL: {{{context.monitorUrl}}}  \n- Monitor type: {{context.monitorType}}  \n- From: {{context.locationNames}}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "d0bf337f-53be-4123-9fd3-03d496457dd2"
+        }
+    ],
+    "params": {}
+}
