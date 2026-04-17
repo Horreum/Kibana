@@ -1,0 +1,40 @@
+{
+    "name": "Synthetics status internal rule",
+    "tags": [
+        "SYNTHETICS_DEFAULT_ALERT"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "recovered",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "The alert for monitor \"{{context.monitorName}}\" from {{context.locationNames}} is no longer active: {{context.recoveryReason}}. - Elastic Synthetics\n\nDetails:\n\n- Monitor name: {{context.monitorName}}  \n- {{context.monitorUrlLabel}}: {{{context.monitorUrl}}}  \n- Monitor type: {{context.monitorType}}  \n- From: {{context.locationNames}}  \n- Last error received: {{{context.lastErrorMessage}}}  \n{{{context.linkMessage}}}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "dc7cc3c0-bf21-4a26-93f2-bdfba90b350a"
+        },
+        {
+            "group": "xpack.synthetics.alerts.actionGroups.monitorStatus",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "Monitor \"{{context.monitorName}}\" is {{{context.status}}} from {{context.locationNames}}.{{{context.pendingLastRunAt}}} - Elastic Synthetics\n\nDetails:\n\n- Monitor name: {{context.monitorName}}  \n- {{context.monitorUrlLabel}}: {{{context.monitorUrl}}}  \n- Monitor type: {{context.monitorType}}  \n- Checked at: {{context.checkedAt}}  \n- From: {{context.locationNames}}  \n- Reason: {{{context.reason}}} \n- Error received: {{{context.lastErrorMessage}}}  \n{{{context.failedStepInfo}}}  \n{{{context.linkMessage}}}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "6af7f839-5f95-4529-8eb5-12be88f5b244"
+        }
+    ],
+    "params": {}
+}
