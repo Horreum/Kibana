@@ -1,0 +1,46 @@
+{
+    "name": "Cluster health",
+    "tags": [
+        "alerting"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "default",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "{\r\n    \"kibana\":\"{{kibanaBaseUrl}}\",\r\n    \"alert\":{{{alert}}},\r\n    \"context\":{{{context}}},\r\n    \"rule\":{{{rule}}}\r\n}\r\n"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "d44f5354-6cd2-4fb5-838e-cb51ce123b12"
+        },
+        {
+            "group": "recovered",
+            "id": "87eac9a7-b4ad-4468-8315-f6a4f82c062e",
+            "params": {
+                "body": "{\r\n    \"alert\":{{{alert}}}\r\n}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "1e7e9662-7ecf-4cdb-b00a-69ed4e6ce4cf"
+        }
+    ],
+    "params": {
+        "threshold": 85,
+        "duration": "1h"
+    },
+    "alert_delay": {
+        "active": 1
+    }
+}
