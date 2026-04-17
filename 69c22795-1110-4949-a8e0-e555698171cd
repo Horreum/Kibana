@@ -1,0 +1,76 @@
+{
+    "name": "Thread pool search rejections",
+    "tags": [
+        "alerting"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "default",
+            "id": "e7e39668-6490-4093-b96a-126d5edfe9c7",
+            "params": {
+                "documents": [
+                    {
+                        "all_single": "{{.}}",
+                        "all_array": "{{#context}}{{.}}{{/context}}",
+                        "alert": {
+                            "uuid": "{{alert.uuid}}",
+                            "created_by": {
+                                "id": "{{rule.id}}",
+                                "name": "{{rule.name}}",
+                                "type": "rule"
+                            }
+                        },
+                        "event": {
+                            "date": "{{date}}",
+                            "status": "alert",
+                            "type": "{{rule.name}}"
+                        },
+                        "message": "{{context.internalFullMessage}}",
+                        "cluster": {
+                            "name": "{{context.clusterName}}"
+                        },
+                        "node": {
+                            "name": "{{context.clusterName}}"
+                        },
+                        "data_stream": {
+                            "dataset": "eda.alerts",
+                            "type": "logs",
+                            "namespace": "default"
+                        }
+                    }
+                ]
+            },
+            "connector_type_id": ".index",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "81707302-a546-4f06-af9c-2169f44273ed"
+        },
+        {
+            "group": "recovered",
+            "id": "e7e39668-6490-4093-b96a-126d5edfe9c7",
+            "params": {
+                "body": "{{#state.alertStates}}\r\n{\r\n  \"all_single\": \"{{.}}\",\r\n  \"all_array\": \"{{#context}}{{.}}{{/context}}\",\r\n  \"alert\": {\r\n    \"uuid\": \"{{alert.uuid}}\",\r\n    \"created_by\": {\r\n      \"id\": \"{{rule.id}}\",\r\n      \"name\": \"{{rule.name}}\",\r\n      \"type\": \"rule\"\r\n    }\r\n  },\r\n  \"event\": {\r\n    \"date\": \"{{date}}\",\r\n    \"status\": \"recovered\",\r\n    \"type\": \"{{rule.name}}\"\r\n  },\r\n  \"message\": \"Cluster health alert is recovered for cluster: {{cluster.clusterName}}.\",\r\n  \"cluster\": {\r\n    \"name\": \"{{cluster.clusterName}}\"\r\n  },\r\n  \"node\": {\r\n    \"name\": \"{{nodeName}}\"\r\n  },\r\n  \"data_stream\": {\r\n    \"dataset\": \"eda.alerts\",\r\n    \"type\": \"logs\",\r\n    \"namespace\": \"default\"\r\n  }\r\n}\r\n{{/state.alertStates}}"
+            },
+            "connector_type_id": ".index",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "5739f300-a19a-4823-ac26-583b717090d9"
+        }
+    ],
+    "params": {
+        "threshold": 300,
+        "duration": "5m"
+    },
+    "alert_delay": {
+        "active": 1
+    }
+}
