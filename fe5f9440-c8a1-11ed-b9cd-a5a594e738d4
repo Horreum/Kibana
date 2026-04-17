@@ -1,0 +1,107 @@
+{
+    "name": "Transform Health",
+    "tags": [
+        "alerting"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "transform_issue",
+            "id": "e7e39668-6490-4093-b96a-126d5edfe9c7",
+            "params": {
+                "documents": [
+                    {
+                        "alert": {
+                            "all_array": "{{#context}}{{.}}{{/context}}",
+                            "all_single": "{{.}}",
+                            "created_by": {
+                                "id": "{{rule.id}}",
+                                "name": "{{rule.name}}",
+                                "type": "rule"
+                            },
+                            "uuid": "{{alert.uuid}}"
+                        },
+                        "cluster": {
+                            "name": "eda-self-monitoring"
+                        },
+                        "data_stream": {
+                            "dataset": "alerts",
+                            "namespace": "default",
+                            "type": "eda"
+                        },
+                        "event": {
+                            "date": "{{date}}",
+                            "status": "alert"
+                        },
+                        "message": "{{context.message}}",
+                        "node": {
+                            "name": "{{#context.results}}{{transform_id}},{{/context.results}}"
+                        }
+                    }
+                ]
+            },
+            "connector_type_id": ".index",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "9256e5f4-5d0f-44dd-8173-5db303406cc2"
+        },
+        {
+            "group": "recovered",
+            "id": "e7e39668-6490-4093-b96a-126d5edfe9c7",
+            "params": {
+                "documents": [
+                    {
+                        "alert": {
+                            "all_array": "{{#context}}{{.}}{{/context}}",
+                            "all_single": "{{.}}",
+                            "created_by": {
+                                "id": "{{rule.id}}",
+                                "name": "{{rule.name}}",
+                                "type": "rule"
+                            },
+                            "uuid": "{{alert.uuid}}"
+                        },
+                        "cluster": {
+                            "name": "eda-self-monitoring"
+                        },
+                        "data_stream": {
+                            "dataset": "alerts",
+                            "namespace": "default",
+                            "type": "eda"
+                        },
+                        "event": {
+                            "date": "{{date}}",
+                            "status": "recovered"
+                        },
+                        "message": "{{context.message}}",
+                        "node": {
+                            "name": "{{#context.results}}{{transform_id}},{{/context.results}}"
+                        }
+                    }
+                ]
+            },
+            "connector_type_id": ".index",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "98c36970-2076-4b76-8965-eb3e18736ea2"
+        }
+    ],
+    "params": {
+        "excludeTransforms": null,
+        "includeTransforms": [
+            "*"
+        ],
+        "testsConfig": null
+    },
+    "alert_delay": {
+        "active": 1
+    }
+}
