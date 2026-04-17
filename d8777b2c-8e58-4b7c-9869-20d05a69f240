@@ -1,0 +1,102 @@
+{
+    "name": "EDA Actionable Alerts",
+    "tags": [
+        "alerting"
+    ],
+    "schedule": {
+        "interval": "1m"
+    },
+    "actions": [
+        {
+            "group": "query matched",
+            "id": "e11eb2ec-d7ad-4990-be78-af785fbd3a06",
+            "params": {
+                "body": "{{#context.hits}}\r\n{\r\n  \"teamid\": \"{{_source.teamid}}\",\r\n  \"channelid\": \"{{_source.channel.id}}\",\r\n  \"cluster\": {\r\n    \"name\":\"{{_source.cluster.name}}\"\r\n  },\r\n  \"node\": {\r\n    \"name\":\"{{_source.node.name}}\"\r\n  },\r\n  \"alert\": {\r\n    \"uuid\":\"{{_source.alert.uuid}}\",\r\n    \"link\": \"{{rule.url}}\"\r\n  },\r\n  \"event\": {\r\n    \"type\": \"{{_source.alert.created_by.name}}\",\r\n    \"status\": \"{{_source.event.status}}\",\r\n    \"level\": \"{{_source.event.level}}\",\r\n    \"created\": \"{{_source.event.created}}\"\r\n  },\r\n  \"message\": \"{{_source.message}}\"\r\n}\r\n{{/context.hits}}"
+            },
+            "connector_type_id": ".webhook",
+            "frequency": {
+                "summary": false,
+                "notify_when": "onActionGroupChange",
+                "throttle": null
+            },
+            "uuid": "bb4b8b0f-7f2c-4c81-9f68-665590d2ad34"
+        }
+    ],
+    "params": {
+        "searchConfiguration": {
+            "query": {
+                "query": "",
+                "language": "kuery"
+            },
+            "filter": [
+                {
+                    "meta": {
+                        "disabled": false,
+                        "negate": true,
+                        "alias": null,
+                        "key": "event.status",
+                        "field": "event.status",
+                        "params": {
+                            "query": "recovered"
+                        },
+                        "type": "phrase",
+                        "index": "c5294cd5-0c1b-409b-ba5a-08a1c4628bae"
+                    },
+                    "query": {
+                        "match_phrase": {
+                            "event.status": "recovered"
+                        }
+                    },
+                    "$state": {
+                        "store": "appState"
+                    }
+                },
+                {
+                    "meta": {
+                        "type": "custom",
+                        "disabled": false,
+                        "negate": false,
+                        "alias": ">10m<7d",
+                        "key": "query",
+                        "value": "{\"range\":{\"@timestamp\":{\"gte\":\"now-7d/d\",\"lte\":\"now-10m/m\"}}}",
+                        "index": "c5294cd5-0c1b-409b-ba5a-08a1c4628bae"
+                    },
+                    "$state": {
+                        "store": "appState"
+                    },
+                    "query": {
+                        "range": {
+                            "@timestamp": {
+                                "gte": "now-7d/d",
+                                "lte": "now-10m/m"
+                            }
+                        }
+                    }
+                }
+            ],
+            "index": "c5294cd5-0c1b-409b-ba5a-08a1c4628bae"
+        },
+        "timeField": "@timestamp",
+        "searchType": "searchSource",
+        "timeWindowSize": 7,
+        "timeWindowUnit": "d",
+        "threshold": [
+            0
+        ],
+        "thresholdComparator": ">",
+        "size": 100,
+        "aggType": "count",
+        "groupBy": "top",
+        "termField": [
+            "alert.uuid",
+            "node.name",
+            "alert.created_by.name"
+        ],
+        "termSize": 100,
+        "excludeHitsFromPreviousRun": false,
+        "sourceFields": []
+    },
+    "alert_delay": {
+        "active": 1
+    }
+}
