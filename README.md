@@ -1,4 +1,4 @@
-## observability Alert Rules Overview
+### observability Alert Rules Overview
 There are __18__ alert rules in Kibana of customer __observability__.  
 All rules are stored with their __Kibana ID__ on GitHub.  
 Find the __Kibana name__ in list below with a link to the corresponding rule content.  
